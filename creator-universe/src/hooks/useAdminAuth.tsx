@@ -30,10 +30,10 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
         const session = await getSession();
         if (!session) {
           if (!cancelled) setIsAuthenticated(false);
-          return;
+        } else {
+          const profile = await getAdminProfile();
+          if (!cancelled) setIsAuthenticated(Boolean(profile));
         }
-        const profile = await getAdminProfile();
-        if (!cancelled) setIsAuthenticated(Boolean(profile));
       } catch {
         if (!cancelled) setIsAuthenticated(false);
       } finally {

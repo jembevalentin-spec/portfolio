@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import MainLayout from "./layouts/MainLayout";
 import AdminLayout from "./layouts/AdminLayout";
@@ -19,7 +20,9 @@ import AdminProducts from "./pages/admin/AdminProducts";
 import AdminProjects from "./pages/admin/AdminProjects";
 import AdminContent from "./pages/admin/AdminContent";
 
-function PageTransition({ children }: { children: React.ReactNode }) {
+type PageTransitionProps = { children: ReactNode };
+
+function PageTransition({ children }: PageTransitionProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -34,6 +37,7 @@ function PageTransition({ children }: { children: React.ReactNode }) {
 
 function PublicRoutes() {
   const location = useLocation();
+
   return (
     <MainLayout>
       <AnimatePresence mode="wait">
@@ -52,27 +56,25 @@ function PublicRoutes() {
   );
 }
 
-function AdminRoutes() {
-  return (
-    <AdminAuthProvider>
-      <Routes>
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
-        <Route path="/admin/products" element={<AdminLayout><AdminProducts /></AdminLayout>} />
-        <Route path="/admin/projects" element={<AdminLayout><AdminProjects /></AdminLayout>} />
-        <Route path="/admin/content" element={<AdminLayout><AdminContent /></AdminLayout>} />
-      </Routes>
-    </AdminAuthProvider>
-  );
-}
-
+/**
+ * The previous build used a second Routes tree inside /admin/*.
+ * Keeping every route in one top-level Routes tree is more reliable with
+ * React Router 7 and avoids a blank screen on direct /admin navigation.
+ */
 export default function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/admin/*" element={<AdminRoutes />} />
-        <Route path="/*" element={<PublicRoutes />} />
-      </Routes>
+      <AdminAuthProvider>
+        <Routes>
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
+          <Route path="/admin/products" element={<AdminLayout><AdminProducts /></AdminLayout>} />
+          <Route path="/admin/projects" element={<AdminLayout><AdminProjects /></AdminLayout>} />
+          <Route path="/admin/content" element={<AdminLayout><AdminContent /></AdminLayout>} />
+          <Route path="/admin/*" element={<AdminLogin />} />
+          <Route path="/*" element={<PublicRoutes />} />
+        </Routes>
+      </AdminAuthProvider>
     </BrowserRouter>
   );
 }

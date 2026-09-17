@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { ShieldCheck } from "lucide-react";
 import { useAdminAuth } from "../../hooks/useAdminAuth";
 
@@ -35,7 +35,10 @@ export default function AdminLogin() {
         <button disabled={busy || loading} className="focus-ring mt-6 w-full bg-ink text-bg rounded-xl py-3 text-sm font-medium disabled:opacity-50">
           {busy ? "Signing in…" : "Enter admin"}
         </button>
-        <p className="text-[11px] text-muted/70 mt-5">Authorized administrator: {adminEmail}</p>
+        <div className="mt-5 space-y-2">
+          <p className="text-[11px] text-muted/70">Authorized administrator: {adminEmail}</p>
+          <Link to="/" className="text-[11px] text-muted hover:text-ink underline underline-offset-4">Back to Jembe website</Link>
+        </div>
       </form>
     </div>
   );

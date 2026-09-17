@@ -37,7 +37,7 @@ create table if not exists public.site_content (
   site_key text primary key default 'main',
   site_name text not null default 'Jembe', logo_text text not null default 'JM', logo_url text default '', motto text default '',
   hero_eyebrow text default '', hero_headline text default '', hero_description text default '', hero_owner_image text default '',
-  hero_background_video text default '/media/jembe-background.mp4', hero_background_image text default '/media/jembe-background-poster.jpg', hero_overlay numeric not null default 62,
+  hero_background_video text default '/media/jembe-background.mp4', hero_background_image text default '', hero_overlay numeric not null default 62,
   hero_visible boolean not null default true, show_owner_photo boolean not null default true, show_featured_product boolean not null default true,
   store_label text default '', store_headline text default '', store_description text default '',
   portfolio_label text default '', portfolio_headline text default '', portfolio_description text default '',

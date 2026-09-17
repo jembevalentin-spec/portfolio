@@ -48,9 +48,13 @@ export default function Hero() {
     const onCanPlay = () => forcePlay();
     const onLoadedData = () => forcePlay();
     const onVisibility = () => forcePlay();
+    const onStalled = () => forcePlay();
+    const onWaiting = () => forcePlay();
 
     video.addEventListener("canplay", onCanPlay);
     video.addEventListener("loadeddata", onLoadedData);
+    video.addEventListener("stalled", onStalled);
+    video.addEventListener("waiting", onWaiting);
     document.addEventListener("visibilitychange", onVisibility);
     window.addEventListener("pointerdown", forcePlay, { once: true, passive: true });
 
@@ -59,6 +63,8 @@ export default function Hero() {
     return () => {
       video.removeEventListener("canplay", onCanPlay);
       video.removeEventListener("loadeddata", onLoadedData);
+      video.removeEventListener("stalled", onStalled);
+      video.removeEventListener("waiting", onWaiting);
       document.removeEventListener("visibilitychange", onVisibility);
       window.removeEventListener("pointerdown", forcePlay);
     };
@@ -68,9 +74,9 @@ export default function Hero() {
     <section
       onMouseMove={handleMouseMove}
       onMouseLeave={reset}
-      className="relative min-h-[100svh] flex flex-col justify-center overflow-hidden pt-28 pb-16"
+      className="relative isolate min-h-[100svh] flex flex-col justify-center overflow-hidden pt-28 pb-16"
     >
-      <div className="absolute inset-0 -z-20 overflow-hidden bg-black" aria-hidden="true">
+      <div className="absolute inset-0 z-0 overflow-hidden bg-black" aria-hidden="true">
         {site.heroBackgroundVideo ? (
           <video
             ref={videoRef}
@@ -82,7 +88,7 @@ export default function Hero() {
             playsInline
             disablePictureInPicture
             preload="auto"
-            poster={site.heroBackgroundImage || undefined}
+            poster={site.heroBackgroundImage || "/media/jembe-background-poster.jpg"}
             onPause={(e) => {
               if (document.visibilityState === "visible") {
                 e.currentTarget.play().catch(() => undefined);
@@ -106,7 +112,7 @@ export default function Hero() {
         <div className="absolute inset-0 noise opacity-60" />
       </div>
 
-      <div className="max-w-content mx-auto px-6 w-full grid lg:grid-cols-[220px_minmax(0,1fr)_310px] gap-8 lg:gap-10 items-center">
+      <div className="relative z-10 max-w-content mx-auto px-6 w-full grid lg:grid-cols-[220px_minmax(0,1fr)_310px] gap-8 lg:gap-10 items-center">
         <div className="order-1 flex flex-col items-center lg:items-start">
           <motion.div
             initial={{ opacity: 0, y: 14 }}
@@ -227,7 +233,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+      <div className="absolute z-10 bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
         <span className="text-[11px] text-white/50 tracking-wide">Scroll</span>
         <span className="relative w-px h-10 bg-white/20 overflow-hidden">
           <span className="absolute inset-x-0 top-0 h-3 bg-white animate-scrolldown" />

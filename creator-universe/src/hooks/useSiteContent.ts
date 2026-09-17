@@ -47,7 +47,7 @@ export const defaultSiteContent: SiteContent = {
   heroDescription: "I design and build Android apps, websites, and focused digital tools — then ship the finished work here. Practical ideas, polished execution, no unnecessary noise.",
   heroOwnerImage: "",
   heroBackgroundVideo: "/media/jembe-background.mp4",
-  heroBackgroundImage: "",
+  heroBackgroundImage: "/media/jembe-background-poster.jpg",
   heroOverlay: 62,
   heroVisible: true,
   showOwnerPhoto: true,
