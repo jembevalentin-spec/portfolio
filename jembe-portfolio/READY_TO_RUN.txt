@@ -1,0 +1,30 @@
+JEMBE - FULL SUPABASE-READY PROJECT
+
+Use: creator-universe/ as the website project.
+
+LOCAL:
+1. Open a terminal in creator-universe.
+2. Run: npm install
+3. Run: npm run dev
+4. Open: http://localhost:5173
+5. Admin: http://localhost:5173/admin
+6. Sign in with the Supabase Auth account jembevalentin@gmail.com
+
+SUPABASE:
+- Run JEMBE_SUPABASE_ONE_SQL.sql once in Supabase SQL Editor.
+- Create the Auth user jembevalentin@gmail.com in Authentication > Users.
+- Make sure its public.profiles row has role = admin.
+
+GITHUB:
+- The public Supabase URL/key are in .env for local testing.
+- .gitignore excludes .env, so the local .env should NOT be committed.
+- Commit the code and push to GitHub.
+
+NETLIFY:
+Add these environment variables in Netlify:
+VITE_SUPABASE_URL
+VITE_SUPABASE_ANON_KEY
+Then redeploy.
+
+SECURITY:
+Never put a Supabase service-role or secret key in the frontend, GitHub, or Netlify frontend variables.
