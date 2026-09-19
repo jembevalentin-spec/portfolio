@@ -168,11 +168,35 @@ export async function uploadSiteMedia(file: File, kind: "logo" | "owner" | "back
   return uploadPublicFile(bucket, file, folder);
 }
 
+
+function isVisualPreviewMode() {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).get("jembeVisualPreview") === "1";
+}
+
+function previewContent(value: unknown): SiteContent | null {
+  if (!value || typeof value !== "object") return null;
+  const raw = value as Partial<SiteContent>;
+  return {
+    ...defaultSiteContent,
+    ...raw,
+    heroOverlay: Number(raw.heroOverlay ?? defaultSiteContent.heroOverlay),
+    heroVisible: raw.heroVisible ?? defaultSiteContent.heroVisible,
+    showOwnerPhoto: raw.showOwnerPhoto ?? defaultSiteContent.showOwnerPhoto,
+    showFeaturedProduct: raw.showFeaturedProduct ?? defaultSiteContent.showFeaturedProduct,
+    announcementVisible: raw.announcementVisible ?? defaultSiteContent.announcementVisible,
+    design: normalizeSiteDesign(raw.design),
+  };
+}
+
 export function useSiteContent() {
+  const visualPreview = isVisualPreviewMode();
   const [content, setContent] = useState<SiteContent>(defaultSiteContent);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!visualPreview);
 
   useEffect(() => {
+    if (visualPreview) return;
+
     let cancelled = false;
     (async () => {
       if (!supabaseConfigured) {
@@ -202,7 +226,22 @@ export function useSiteContent() {
       cancelled = true;
       window.removeEventListener("jembe-site-content-changed", sync);
     };
-  }, []);
+  }, [visualPreview]);
+
+  useEffect(() => {
+    if (!visualPreview) return;
+
+    const receivePreview = (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return;
+      if (!event.data || event.data.type !== "jembe-preview-update") return;
+      const next = previewContent(event.data.content);
+      if (next) setContent(next);
+    };
+
+    window.addEventListener("message", receivePreview);
+    if (window.parent === window) setLoading(false);
+    return () => window.removeEventListener("message", receivePreview);
+  }, [visualPreview]);
 
   return { ...content, loading };
 }

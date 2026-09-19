@@ -1,0 +1,107 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 0 0% 4%;
+  --surface: 0 0% 8%;
+  --surface-2: 0 0% 11%;
+  --ink: 40 20% 96%;
+  --muted: 0 0% 55%;
+  --stroke: 0 0% 100% / 0.08;
+  --accent-a: 190 90% 70%;
+  --accent-b: 239 84% 67%;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--stroke)) transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: hsl(var(--bg));
+  color: hsl(var(--ink));
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: hsl(var(--accent-b) / 0.35);
+  color: hsl(var(--ink));
+}
+
+.accent-text {
+  background-image: linear-gradient(90deg, hsl(var(--accent-a)), hsl(var(--accent-b)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.accent-gradient {
+  background-image: linear-gradient(90deg, hsl(var(--accent-a)), hsl(var(--accent-b)));
+}
+
+.accent-ring {
+  position: relative;
+}
+.accent-ring::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(90deg, hsl(var(--accent-a)), hsl(var(--accent-b)));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.accent-ring:hover::before {
+  opacity: 1;
+}
+
+.noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+.admin-input {
+  width: 100%;
+  border-radius: 0.5rem;
+  background: hsl(var(--bg));
+  border: 1px solid hsl(var(--stroke));
+  padding: 0.55rem 0.75rem;
+  font-size: 0.875rem;
+  color: hsl(var(--ink));
+}
+.admin-input:focus-visible {
+  outline: 2px solid hsl(var(--accent-a));
+  outline-offset: 1px;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid hsl(var(--accent-a));
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.icon-btn { @apply focus-ring inline-flex items-center justify-center w-9 h-9 rounded-lg border border-stroke text-muted hover:text-ink disabled:opacity-25; }
+.panel-card { @apply rounded-2xl border border-stroke bg-surface p-4; }

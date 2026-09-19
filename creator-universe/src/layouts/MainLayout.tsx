@@ -20,12 +20,13 @@ function SiteThemeRuntime() {
 }
 
 export default function MainLayout({ children }: { children: ReactNode }) {
+  const visualPreview = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("jembeVisualPreview") === "1";
   return (
-    <div className="min-h-screen bg-bg text-ink noise">
+    <div className={`min-h-screen bg-bg text-ink noise ${visualPreview ? "jembe-visual-preview" : ""}`}>
       <SiteThemeRuntime />
-      <Navbar />
+      {!visualPreview && <Navbar />}
       <main>{children}</main>
-      <Footer />
+      {!visualPreview && <Footer />}
     </div>
   );
 }

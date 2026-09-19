@@ -1,0 +1,6 @@
+import { ArrowUpRight } from "lucide-react";
+import MagneticButton from "../components/MagneticButton";
+import AnimatedText from "../components/AnimatedText";
+import FadeIn from "../components/FadeIn";
+import { useSiteContent } from "../hooks/useSiteContent";
+export default function Contact(){const site=useSiteContent();return <section id="contact" className="py-28 md:py-40 border-t border-stroke relative overflow-hidden"><div className="pointer-events-none absolute inset-0 -z-10"><div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] rounded-full bg-[hsl(239,84%,67%)]/[0.05] blur-[140px]"/></div><div className="max-w-content mx-auto px-6 text-center"><FadeIn><p className="text-sm text-muted mb-6">{site.contactLabel}</p></FadeIn><AnimatedText as="h2" text={site.contactHeadline} className="font-display text-5xl sm:text-6xl md:text-7xl leading-[1.02] mx-auto max-w-3xl"/><FadeIn delay={.2}><p className="mt-6 text-muted max-w-md mx-auto">{site.contactDescription}</p></FadeIn><FadeIn delay={.3}><MagneticButton href={`mailto:${site.contactEmail}`} strength={.25} className="mt-10 bg-ink text-bg rounded-full px-8 py-4 text-base font-medium gap-2 hover:opacity-90 transition-opacity">{site.contactEmail}<ArrowUpRight size={16}/></MagneticButton></FadeIn></div></section>}
