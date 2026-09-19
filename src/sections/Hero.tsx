@@ -199,7 +199,7 @@ function HeroLayer({
 
   const startRef = { x: box.x, y: box.y, w: box.w, h: box.h };
 
-  const postDrag = (event: ReactPointerEvent<HTMLDivElement>, mode: "move" | "resize", direction = "se") => {
+  const postDrag = (event: ReactPointerEvent<HTMLElement>, mode: "move" | "resize", direction = "se") => {
     if (!visualEdit || visualDevice() === "mobile" || !visualId || box.locked) return;
     const editable = (event.target as HTMLElement | null)?.closest('[contenteditable="true"]');
     if (editable) {
