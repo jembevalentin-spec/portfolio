@@ -2,7 +2,7 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 import type { MouseEvent } from "react";
-import { ArrowUpRight, PlayCircle } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import MagneticButton from "../components/MagneticButton";
 import AnimatedText from "../components/AnimatedText";
 import { useProductsStore } from "../hooks/useContentStore";

@@ -161,6 +161,9 @@ export default function VisualStudio() {
   };
 
   const selectedBox = selected?.kind === "hero" ? design.hero.elements[selected.id] : null;
+  const selectedCustom = selected?.kind === "section" && isCustomSection(selected.id)
+    ? design.customSections.find(s => s.id === customId(selected.id)) ?? null
+    : null;
 
   if (live.loading && draft === live) {
     return <div className="py-12 text-sm text-muted">Loading Jembe Visual Studio…</div>;
@@ -179,7 +182,8 @@ export default function VisualStudio() {
     const rect = preview?.getBoundingClientRect();
     if (!rect) return;
 
-    const move = (ev: globalThis.PointerEvent) => {
+    const move: EventListener = (event) => {
+      const ev = event as PointerEvent;
       const dx = ((ev.clientX - startX) / rect.width) * 100;
       const dy = ((ev.clientY - startY) / rect.height) * 100;
       setDraft(c => {
@@ -311,7 +315,11 @@ export default function VisualStudio() {
             <section className="panel-card space-y-4">
               <div><p className="font-display text-lg">{sectionLabel(design, selected.id)}</p><p className="text-[11px] text-muted mt-1">Control the public section.</p></div>
               <button onClick={() => toggleSection(selected.id)} className="w-full rounded-xl border border-stroke px-3 py-3 text-left text-xs flex items-center justify-between"><span>{sectionVisible(design, selected.id) ? "Visible" : "Hidden"}</span>{sectionVisible(design, selected.id) ? <Eye size={14} /> : <EyeOff size={14} />}</button>
-              {isCustomSection(selected.id) && (() => { const custom = design.customSections.find(s => s.id === customId(selected.id)); if (!custom) return null; return <><label className="block"><span className="block text-[11px] text-muted mb-1.5">Section title</span><input value={custom.title} onChange={e => patchDesign(d => ({ ...d, customSections: d.customSections.map(s => s.id === custom.id ? { ...s, title: e.target.value } : s) }))} className="admin-input" /></label><label className="block"><span className="block text-[11px] text-muted mb-1.5">Section content</span><textarea rows={5} value={custom.body} onChange={e => patchDesign(d => ({ ...d, customSections: d.customSections.map(s => s.id === custom.id ? { ...s, body: e.target.value } : s) }))} className="admin-input" /></label><button onClick={() => removeSection(selected.id)} className="w-full rounded-xl border border-red-400/20 text-red-300 px-3 py-2.5 text-xs">Delete section</button></>} )}
+              {selectedCustom ? (<>
+                <label className="block"><span className="block text-[11px] text-muted mb-1.5">Section title</span><input value={selectedCustom.title} onChange={e => patchDesign(d => ({ ...d, customSections: d.customSections.map(s => s.id === selectedCustom.id ? { ...s, title: e.target.value } : s) }))} className="admin-input" /></label>
+                <label className="block"><span className="block text-[11px] text-muted mb-1.5">Section content</span><textarea rows={5} value={selectedCustom.body} onChange={e => patchDesign(d => ({ ...d, customSections: d.customSections.map(s => s.id === selectedCustom.id ? { ...s, body: e.target.value } : s) }))} className="admin-input" /></label>
+                <button onClick={() => selected && selected.kind === "section" && removeSection(selected.id)} className="w-full rounded-xl border border-red-400/20 text-red-300 px-3 py-2.5 text-xs">Delete section</button>
+              </>) : null}
               <div className="rounded-xl border border-dashed border-stroke p-3 text-[11px] text-muted">Use the up/down buttons in Layers to reorder sections. The public homepage follows this order after publishing.</div>
             </section>
           )}
