@@ -53,13 +53,13 @@ export const defaultSiteContent: SiteContent = {
   heroHeadline: "Digital products built to be useful.",
   heroDescription: "I design and build Android apps, websites, and focused digital tools — then ship the finished work here. Practical ideas, polished execution, no unnecessary noise.",
   heroOwnerImage: "",
-  heroBackgroundVideo: "/media/jembe-background.mp4",
-  heroBackgroundImage: "/media/jembe-background-poster.jpg",
-  heroBackgroundType: "video",
+  heroBackgroundVideo: "",
+  heroBackgroundImage: "",
+  heroBackgroundType: "none",
   heroOverlay: 62,
-  lowerBackgroundType: "image",
-  lowerBackgroundVideo: "/media/jembe-background.mp4",
-  lowerBackgroundImage: "/media/jembe-background-poster.jpg",
+  lowerBackgroundType: "none",
+  lowerBackgroundVideo: "",
+  lowerBackgroundImage: "",
   lowerOverlay: 78,
   heroVisible: true,
   showOwnerPhoto: true,
@@ -86,6 +86,19 @@ export const defaultSiteContent: SiteContent = {
   design: defaultSiteDesign,
 };
 
+// The bundled traffic video/poster were removed from the project.
+// Ignore any saved reference to them (e.g. old Supabase rows) so nothing tries to load them.
+const REMOVED_MEDIA = ["/media/jembe-background.mp4", "/media/jembe-background-poster.jpg"];
+const cleanMedia = (value: unknown) => {
+  const v = String(value ?? "");
+  return REMOVED_MEDIA.includes(v) ? "" : v;
+};
+const bgType = (type: unknown, video: string, image: string): "video" | "image" | "none" => {
+  if (type === "video" && video) return "video";
+  if (type === "image" && image) return "image";
+  return "none";
+};
+
 const fromRow = (row: Record<string, unknown>): SiteContent => ({
   siteName: String(row.site_name ?? defaultSiteContent.siteName),
   logoText: String(row.logo_text ?? defaultSiteContent.logoText),
@@ -95,13 +108,13 @@ const fromRow = (row: Record<string, unknown>): SiteContent => ({
   heroHeadline: String(row.hero_headline ?? ""),
   heroDescription: String(row.hero_description ?? ""),
   heroOwnerImage: String(row.hero_owner_image ?? ""),
-  heroBackgroundVideo: String(row.hero_background_video ?? ""),
-  heroBackgroundImage: String(row.hero_background_image ?? ""),
-  heroBackgroundType: (row.hero_background_type === "image" || row.hero_background_type === "none") ? row.hero_background_type : "video",
+  heroBackgroundVideo: cleanMedia(row.hero_background_video),
+  heroBackgroundImage: cleanMedia(row.hero_background_image),
+  heroBackgroundType: bgType(row.hero_background_type, cleanMedia(row.hero_background_video), cleanMedia(row.hero_background_image)),
   heroOverlay: Number(row.hero_overlay ?? defaultSiteContent.heroOverlay),
-  lowerBackgroundType: (row.lower_background_type === "video" || row.lower_background_type === "none") ? row.lower_background_type : "image",
-  lowerBackgroundVideo: String(row.lower_background_video ?? ""),
-  lowerBackgroundImage: String(row.lower_background_image ?? ""),
+  lowerBackgroundType: bgType(row.lower_background_type, cleanMedia(row.lower_background_video), cleanMedia(row.lower_background_image)),
+  lowerBackgroundVideo: cleanMedia(row.lower_background_video),
+  lowerBackgroundImage: cleanMedia(row.lower_background_image),
   lowerOverlay: Number(row.lower_overlay ?? defaultSiteContent.lowerOverlay),
   heroVisible: Boolean(row.hero_visible),
   showOwnerPhoto: Boolean(row.show_owner_photo),

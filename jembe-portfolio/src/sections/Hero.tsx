@@ -104,7 +104,7 @@ export default function Hero() {
             key={site.heroBackgroundVideo}
             className="absolute inset-0 w-full h-full object-cover"
             autoPlay loop muted playsInline disablePictureInPicture preload="auto"
-            poster={site.heroBackgroundImage || "/media/jembe-background-poster.jpg"}
+            poster={site.heroBackgroundImage || undefined}
             onPause={(e) => {
               if (document.visibilityState === "visible") e.currentTarget.play().catch(() => undefined);
             }}
