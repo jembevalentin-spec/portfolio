@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import type { PointerEvent, ReactNode } from "react";
+import type { ReactNode, PointerEvent as ReactPointerEvent } from "react";
 import { ArrowDown, ArrowUp, Check, Eye, EyeOff, GripVertical, LayoutTemplate, Monitor, Move, Palette, Plus, Redo2, Save, Smartphone, Undo2, Trash2 } from "lucide-react";
 import { saveSiteContent, useSiteContent, type SiteContent } from "../../hooks/useSiteContent";
 import { defaultSiteDesign, type DesignBox, type HeroElementId, type SectionId, type SectionRef, normalizeSiteDesign, type SiteDesign } from "../../data/siteDesign";
@@ -179,7 +179,7 @@ export default function VisualStudio() {
     const rect = preview?.getBoundingClientRect();
     if (!rect) return;
 
-    const move = (ev: PointerEvent) => {
+    const move = (ev: globalThis.PointerEvent) => {
       const dx = ((ev.clientX - startX) / rect.width) * 100;
       const dy = ((ev.clientY - startY) / rect.height) * 100;
       setDraft(c => {
@@ -344,7 +344,7 @@ export default function VisualStudio() {
   );
 }
 
-function PreviewHero({ draft, design, device, selected, onSelect, onPointerDown, dragging }: { draft: SiteContent; design: SiteDesign; device: "desktop" | "mobile"; selected: SelectedLayer; onSelect: (x: SelectedLayer) => void; onPointerDown: (e: PointerEvent, id: HeroElementId) => void; dragging: boolean }) {
+function PreviewHero({ draft, design, device, selected, onSelect, onPointerDown, dragging }: { draft: SiteContent; design: SiteDesign; device: "desktop" | "mobile"; selected: SelectedLayer; onSelect: (x: SelectedLayer) => void; onPointerDown: (e: ReactPointerEvent, id: HeroElementId) => void; dragging: boolean }) {
   const el = design.hero.elements;
   const frame = (id: HeroElementId, child: ReactNode) => {
     const b = el[id];

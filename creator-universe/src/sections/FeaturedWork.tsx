@@ -33,7 +33,7 @@ function StackCard({ project, i, total }: { project: any; i: number; total: numb
           <h3 className="font-display text-3xl md:text-4xl leading-tight">{project.title}</h3>
           <p className="mt-4 text-muted text-sm md:text-base leading-relaxed">{project.description}</p>
           <div className="mt-6 flex flex-wrap gap-2">
-            {project.technologies.map((t) => (
+            {project.technologies.map((t: string) => (
               <span key={t} className="text-xs px-3 py-1 rounded-full border border-stroke text-muted">
                 {t}
               </span>
