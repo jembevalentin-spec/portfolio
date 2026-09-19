@@ -1,5 +1,6 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useEffect, useRef } from "react";
+import type { ReactNode } from "react";
 import type { MouseEvent } from "react";
 import { ArrowUpRight, PlayCircle } from "lucide-react";
 import MagneticButton from "../components/MagneticButton";
@@ -112,124 +113,97 @@ export default function Hero() {
         <div className="absolute inset-0 noise opacity-60" />
       </div>
 
-      <div className="relative z-10 max-w-content mx-auto px-6 w-full grid lg:grid-cols-[220px_minmax(0,1fr)_310px] gap-8 lg:gap-10 items-center">
-        <div className="order-1 flex flex-col items-center lg:items-start">
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="flex flex-col items-center lg:items-start"
-          >
-            {site.logoUrl ? (
-              <img
-                src={site.logoUrl}
-                alt={site.logoText || site.siteName}
-                className="w-16 h-16 sm:w-20 sm:h-20 rounded-[1.35rem] object-cover border border-white/20 shadow-2xl"
-              />
-            ) : (
-              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[1.35rem] accent-gradient p-px shadow-2xl">
-                <div className="w-full h-full rounded-[1.3rem] bg-black/80 backdrop-blur flex items-center justify-center font-display text-base sm:text-lg">
-                  {site.logoText || site.siteName.slice(0, 2).toUpperCase()}
+      <div
+        className="relative z-10 max-w-content mx-auto px-6 w-full"
+        style={{ maxWidth: `${site.design.hero.canvasMaxWidth}px` }}
+      >
+        <div className="relative min-h-[72svh] lg:min-h-[78svh]">
+          <HeroLayer box={site.design.hero.elements.branding} className="hidden lg:block">
+            <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="flex items-center gap-3">
+              {site.logoUrl ? (
+                <img src={site.logoUrl} alt={site.logoText || site.siteName} className="w-16 h-16 rounded-[1.35rem] object-cover border border-white/20 shadow-2xl" />
+              ) : (
+                <div className="w-16 h-16 rounded-[1.35rem] accent-gradient p-px shadow-2xl">
+                  <div className="w-full h-full rounded-[1.3rem] bg-black/80 backdrop-blur flex items-center justify-center font-display text-lg">
+                    {site.logoText || site.siteName.slice(0, 2).toUpperCase()}
+                  </div>
                 </div>
-              </div>
-            )}
-            <p className="font-display text-base mt-4">{site.siteName}</p>
-            {site.motto && <p className="text-[11px] leading-relaxed text-white/55 mt-1.5 max-w-[190px]">{site.motto}</p>}
-          </motion.div>
+              )}
+              <p className="font-display text-base">{site.siteName}</p>
+            </motion.div>
+          </HeroLayer>
+
+          <HeroLayer box={site.design.hero.elements.motto} className="hidden lg:block">
+            {site.motto && <p className="text-[11px] leading-relaxed text-white/65 max-w-[220px]">{site.motto}</p>}
+          </HeroLayer>
 
           {site.showOwnerPhoto && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.94, y: 18 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.2 }}
-              style={{ rotateX, rotateY, x: translateX, y: translateY, transformStyle: "preserve-3d" }}
-              className="relative mt-6 w-[190px] sm:w-[210px] h-[240px] sm:h-[275px] rounded-[1.7rem] border border-white/15 bg-white/5 backdrop-blur-xl p-2 shadow-2xl overflow-hidden"
-            >
-              <div className="h-full rounded-[1.35rem] overflow-hidden relative bg-white/5">
-                {site.heroOwnerImage ? (
-                  <img
-                    src={site.heroOwnerImage}
-                    alt={`Owner of ${site.siteName}`}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center text-center px-5 bg-[radial-gradient(circle_at_50%_25%,rgba(255,255,255,.15),transparent_36%),linear-gradient(145deg,#171717,#050505)]">
-                    <div className="w-20 h-20 rounded-full accent-gradient mb-4" />
-                    <p className="font-display text-lg">Owner portrait</p>
-                    <p className="text-white/45 text-xs mt-2 leading-relaxed">Upload the owner photo from Admin → Site content.</p>
+            <HeroLayer box={site.design.hero.elements.owner} className="hidden lg:block">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.94, y: 18 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.2 }}
+                style={{ rotateX, rotateY, x: translateX, y: translateY, transformStyle: "preserve-3d", borderRadius: `${site.design.hero.elements.owner.radius ?? 24}px` }}
+                className="relative h-full w-full border border-white/15 bg-white/5 backdrop-blur-xl p-2 shadow-2xl overflow-hidden"
+              >
+                <div className="h-full rounded-[1.35rem] overflow-hidden relative bg-white/5">
+                  {site.heroOwnerImage ? (
+                    <img src={site.heroOwnerImage} alt={`Owner of ${site.siteName}`} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center text-center px-5 bg-[radial-gradient(circle_at_50%_25%,rgba(255,255,255,.15),transparent_36%),linear-gradient(145deg,#171717,#050505)]">
+                      <div className="w-20 h-20 rounded-full accent-gradient mb-4" />
+                      <p className="font-display text-lg">Owner portrait</p>
+                      <p className="text-white/45 text-xs mt-2 leading-relaxed">Upload the owner photo from Admin → Visual Studio.</p>
+                    </div>
+                  )}
+                  <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
+                    <p className="text-[10px] text-white/55 uppercase tracking-[.2em]">Founder</p>
+                    <p className="font-display text-sm mt-1">{site.siteName}</p>
                   </div>
-                )}
-                <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                  <p className="text-[10px] text-white/55 uppercase tracking-[.2em]">Founder</p>
-                  <p className="font-display text-sm mt-1">{site.siteName}</p>
                 </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </HeroLayer>
           )}
-        </div>
 
-        <div className="order-2 lg:pl-2">
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-sm text-white/75 mb-5"
-          >
-            {site.heroEyebrow}
-          </motion.p>
-          <AnimatedText
-            as="h1"
-            text={site.heroHeadline}
-            delay={0.15}
-            className="font-display text-[clamp(4.2rem,8vw,8.5rem)] leading-[0.86] tracking-[-.055em] max-w-5xl drop-shadow-2xl"
-          />
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.7 }}
-            className="mt-8 text-white/80 text-base md:text-lg max-w-2xl leading-relaxed"
-          >
-            {site.heroDescription}
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.85 }}
-            className="mt-10 flex flex-wrap items-center gap-4"
-          >
-            <MagneticButton href="/store" className="bg-white text-black rounded-full px-7 py-3.5 text-sm font-medium gap-2 hover:bg-white/90 transition-colors">
-              Browse the store <ArrowUpRight size={15} />
-            </MagneticButton>
-            <MagneticButton href="/portfolio" className="border border-white/20 rounded-full px-7 py-3.5 text-sm gap-2 bg-white/5 backdrop-blur">
-              See the work
-            </MagneticButton>
-          </motion.div>
-          <div className="mt-8 flex items-center gap-3 text-[11px] uppercase tracking-[.24em] text-white/45">
-            <PlayCircle size={14} />
-            <span>Live background • muted</span>
-          </div>
-        </div>
+          <HeroLayer box={site.design.hero.elements.eyebrow}>
+            <motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }} className="text-sm text-white/75">
+              {site.heroEyebrow}
+            </motion.p>
+          </HeroLayer>
 
-        <div className="order-3 relative hidden lg:block min-h-[520px]" style={{ perspective: 1400 }}>
-          {site.showFeaturedProduct && featured ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.94, y: 18 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.45 }}
-              className="absolute right-0 bottom-4 w-[310px] rounded-[1.8rem] border border-white/15 bg-black/55 backdrop-blur-xl p-3 shadow-2xl"
-            >
-              <div className="aspect-[4/3] rounded-[1.4rem] overflow-hidden bg-white/5">
-                <img src={featured.image} alt={featured.name} className="w-full h-full object-cover" />
-              </div>
-              <div className="p-4">
-                <p className="text-xs text-white/45">{featured.category}</p>
-                <p className="font-display text-xl mt-1">{featured.name}</p>
-                <p className="text-xs text-white/55 mt-2">
-                  {featured.isFree ? "Free download" : `${featured.currency} ${featured.price}`}
-                </p>
-              </div>
+          <HeroLayer box={site.design.hero.elements.headline}>
+            <AnimatedText
+              as="h1" text={site.heroHeadline} delay={0.15}
+              className="font-display text-[clamp(4rem,8.2vw,8.8rem)] leading-[0.86] tracking-[-.055em] drop-shadow-2xl"
+              style={{ transform: `scale(${site.design.hero.elements.headline.fontSize ?? 1})`, transformOrigin: "left top" }}
+            />
+          </HeroLayer>
+
+          <HeroLayer box={site.design.hero.elements.description}>
+            <motion.p initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.7 }} className="text-white text-base md:text-lg max-w-2xl leading-relaxed">
+              {site.heroDescription}
+            </motion.p>
+          </HeroLayer>
+
+          <HeroLayer box={site.design.hero.elements.buttons}>
+            <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.85 }} className="flex flex-wrap items-center gap-4">
+              <MagneticButton href="/store" className="bg-white text-black rounded-full px-7 py-3.5 text-sm font-medium gap-2 hover:bg-white/90 transition-colors">Browse the store <ArrowUpRight size={15} /></MagneticButton>
+              <MagneticButton href="/portfolio" className="border border-white/20 rounded-full px-7 py-3.5 text-sm gap-2 bg-white/5 backdrop-blur">See the work</MagneticButton>
             </motion.div>
+          </HeroLayer>
+
+          {site.showFeaturedProduct && featured ? (
+            <HeroLayer box={site.design.hero.elements.featured} className="hidden lg:block">
+              <motion.div initial={{ opacity: 0, scale: 0.94, y: 18 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ duration: 1, delay: 0.45 }} className="h-full w-full rounded-[1.8rem] border border-white/15 bg-black/55 backdrop-blur-xl p-3 shadow-2xl" style={{ borderRadius: `${site.design.hero.elements.featured.radius ?? 24}px` }}>
+                <div className="aspect-[4/3] rounded-[1.4rem] overflow-hidden bg-white/5"><img src={featured.image} alt={featured.name} className="w-full h-full object-cover" /></div>
+                <div className="p-4"><p className="text-xs text-white/45">{featured.category}</p><p className="font-display text-xl mt-1">{featured.name}</p><p className="text-xs text-white/55 mt-2">{featured.isFree ? "Free download" : `${featured.currency} ${featured.price}`}</p></div>
+              </motion.div>
+            </HeroLayer>
           ) : null}
+
+          <div className="lg:hidden pt-10 space-y-7">
+            {site.showOwnerPhoto && site.heroOwnerImage && <div className="max-w-sm rounded-3xl overflow-hidden border border-white/15 bg-white/5 p-2"><img src={site.heroOwnerImage} alt={`Owner of ${site.siteName}`} className="w-full aspect-[4/5] object-cover rounded-2xl" /></div>}
+            {site.logoUrl && <img src={site.logoUrl} alt={site.siteName} className="w-16 h-16 rounded-2xl object-cover border border-white/20" />}
+            {site.motto && <p className="text-xs text-white/55 max-w-xs">{site.motto}</p>}
+          </div>
         </div>
       </div>
 
@@ -240,5 +214,15 @@ export default function Hero() {
         </span>
       </div>
     </section>
+  );
+}
+
+
+function HeroLayer({ box, children, className = "" }: { box: { x: number; y: number; w: number; h: number; visible: boolean; opacity?: number; }; children: ReactNode; className?: string }) {
+  if (!box.visible) return null;
+  return (
+    <div className={`absolute ${className}`} style={{ left: `${box.x}%`, top: `${box.y}%`, width: `${box.w}%`, height: `${box.h}%`, opacity: (box.opacity ?? 100) / 100 }}>
+      {children}
+    </div>
   );
 }

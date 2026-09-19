@@ -59,7 +59,3 @@ Use only the Supabase public publishable/anon key in the Vite frontend. Never pu
 - Admin authentication for the Jembe admin email
 - Supabase Storage upload support for logo, owner photo and hero media
 - Netlify SPA redirect
-
-
-## Netlify
-The project includes `netlify.toml` and the SPA redirect. Build with `npm run build`.

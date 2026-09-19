@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Navigate, NavLink } from "react-router-dom";
-import { LayoutDashboard, Package, FolderKanban, FileText, LogOut } from "lucide-react";
+import { LayoutDashboard, Package, FolderKanban, FileText, LogOut, LayoutTemplate } from "lucide-react";
 import { useAdminAuth } from "../hooks/useAdminAuth";
 
 const navItems = [
@@ -8,6 +8,7 @@ const navItems = [
   { to: "/admin/products", label: "Products", icon: Package },
   { to: "/admin/projects", label: "Projects", icon: FolderKanban },
   { to: "/admin/content", label: "Site content", icon: FileText },
+  { to: "/admin/visual", label: "Visual Studio", icon: LayoutTemplate },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {

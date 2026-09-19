@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import SectionHeading from "../components/SectionHeading";
 import ProductCard from "../components/ProductCard";
 import FadeIn from "../components/FadeIn";
 import { useProductsStore } from "../hooks/useContentStore";

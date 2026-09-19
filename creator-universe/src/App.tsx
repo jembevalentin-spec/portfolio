@@ -19,6 +19,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminProducts from "./pages/admin/AdminProducts";
 import AdminProjects from "./pages/admin/AdminProjects";
 import AdminContent from "./pages/admin/AdminContent";
+import VisualStudio from "./pages/admin/VisualStudio";
 
 type PageTransitionProps = { children: ReactNode };
 
@@ -71,6 +72,7 @@ export default function App() {
           <Route path="/admin/products" element={<AdminLayout><AdminProducts /></AdminLayout>} />
           <Route path="/admin/projects" element={<AdminLayout><AdminProjects /></AdminLayout>} />
           <Route path="/admin/content" element={<AdminLayout><AdminContent /></AdminLayout>} />
+          <Route path="/admin/visual" element={<AdminLayout><VisualStudio /></AdminLayout>} />
           <Route path="/admin/*" element={<AdminLogin />} />
           <Route path="/*" element={<PublicRoutes />} />
         </Routes>

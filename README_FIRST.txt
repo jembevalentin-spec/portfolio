@@ -1,12 +1,26 @@
-JEMBE - FINAL ADMIN FIX
+JEMBE — VISUAL STUDIO VERSION
 
-1. Use creator-universe as the website project folder.
-2. Run: npm install
-3. Run: npm run dev
-4. Test: http://localhost:5173/
-5. Test: http://localhost:5173/admin
+START HERE
+1. Use the creator-universe folder as the website project.
+2. In Supabase, because you already ran the older Jembe SQL, run JEMBE_VISUAL_STUDIO_MIGRATION.sql once.
+3. Open creator-universe in CMD and run: npm install
+4. Then run: npm run dev
+5. Website: http://localhost:5173
+6. Admin: http://localhost:5173/admin
+7. Visual Studio: http://localhost:5173/admin/visual
 
-The /admin routing was simplified to one React Router tree to prevent a blank/black admin page on direct navigation.
-The admin login still uses Supabase Auth when VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are configured.
+VISUAL STUDIO
+- Drag hero elements directly in the live preview.
+- Select logo, motto, owner photo, headline, description, buttons or featured product.
+- Change X/Y position, width, height, visibility, headline scale, opacity and corner radius.
+- Show/hide homepage sections.
+- Reorder homepage sections.
+- Add and delete custom homepage sections.
+- Preview desktop/mobile.
+- Use Undo/Redo.
+- Publish the design to Supabase.
 
-For GitHub/Netlify, do NOT upload .env. Add the VITE_* values in Netlify environment variables.
+SUPABASE
+- The local .env is included for local testing and is ignored by Git.
+- The public/publishable Supabase key is safe to use in a browser app; never add a service_role/secret key.
+- For Netlify, add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY as environment variables and redeploy.

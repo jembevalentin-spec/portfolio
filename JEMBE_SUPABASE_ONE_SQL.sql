@@ -37,7 +37,7 @@ create table if not exists public.site_content (
   site_key text primary key default 'main',
   site_name text not null default 'Jembe', logo_text text not null default 'JM', logo_url text default '', motto text default '',
   hero_eyebrow text default '', hero_headline text default '', hero_description text default '', hero_owner_image text default '',
-  hero_background_video text default '/media/jembe-background.mp4', hero_background_image text default '', hero_overlay numeric not null default 62,
+  hero_background_video text default '/media/jembe-background.mp4', hero_background_image text default '/media/jembe-background-poster.jpg', hero_overlay numeric not null default 62,
   hero_visible boolean not null default true, show_owner_photo boolean not null default true, show_featured_product boolean not null default true,
   store_label text default '', store_headline text default '', store_description text default '',
   portfolio_label text default '', portfolio_headline text default '', portfolio_description text default '',
@@ -50,6 +50,8 @@ create table if not exists public.site_content (
 
 drop trigger if exists site_content_updated_at on public.site_content;
 create trigger site_content_updated_at before update on public.site_content for each row execute function public.set_updated_at();
+
+alter table public.site_content add column if not exists design_json jsonb not null default '{}'::jsonb;
 
 insert into public.site_content (site_key,site_name,logo_text,motto,hero_eyebrow,hero_headline,hero_description,hero_background_video,hero_overlay,hero_visible,show_owner_photo,show_featured_product,store_label,store_headline,store_description,portfolio_label,portfolio_headline,portfolio_description,about_label,about_headline,about_text,contact_label,contact_headline,contact_description,contact_email,footer_text)
 values ('main','Jembe','JM','Build it. Ship it. Make it useful.','Independent creator — apps, sites & digital tools','Digital products built to be useful.','I design and build Android apps, websites, and focused digital tools — then ship the finished work here. Practical ideas, polished execution, no unnecessary noise.','/media/jembe-background.mp4',62,true,true,true,'The store','Useful products, ready to use.','Apps, websites, templates and tools made by Jembe — ready to download, license or explore.','Portfolio','Selected work, with the thinking behind it.','Case studies that show the problem, process, technology and outcome — not just the final screenshot.','About Jembe','I build small, useful things — then I finish them.','Jembe is an independent developer studio focused on Android apps, modern websites and digital tools. Ideas are turned into real products with a bias toward clarity, speed and usefulness.','Get in touch','Have something worth building?','Open to selected freelance work, collaborations and product conversations.','jembevalentin@gmail.com','Building Android apps, web tools, and focused digital products — and shipping the ones worth sharing.')

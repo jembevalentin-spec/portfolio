@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { restFetch, supabaseConfigured, uploadPublicFile } from "../lib/supabase";
+import { defaultSiteDesign, normalizeSiteDesign, type SiteDesign } from "../data/siteDesign";
 
 export interface SiteContent {
   siteName: string;
@@ -35,6 +36,7 @@ export interface SiteContent {
   footerText: string;
   announcementText: string;
   announcementVisible: boolean;
+  design: SiteDesign;
 }
 
 export const defaultSiteContent: SiteContent = {
@@ -71,6 +73,7 @@ export const defaultSiteContent: SiteContent = {
   footerText: "Building Android apps, web tools, and focused digital products — and shipping the ones worth sharing.",
   announcementText: "",
   announcementVisible: false,
+  design: defaultSiteDesign,
 };
 
 const fromRow = (row: Record<string, unknown>): SiteContent => ({
@@ -107,6 +110,7 @@ const fromRow = (row: Record<string, unknown>): SiteContent => ({
   footerText: String(row.footer_text ?? ""),
   announcementText: String(row.announcement_text ?? ""),
   announcementVisible: Boolean(row.announcement_visible),
+  design: normalizeSiteDesign(row.design_json),
 });
 
 const toRow = (c: SiteContent) => ({
@@ -144,6 +148,7 @@ const toRow = (c: SiteContent) => ({
   footer_text: c.footerText,
   announcement_text: c.announcementText,
   announcement_visible: c.announcementVisible,
+  design_json: c.design,
 });
 
 export async function saveSiteContent(next: SiteContent) {

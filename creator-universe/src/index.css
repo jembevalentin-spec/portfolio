@@ -102,3 +102,6 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+.icon-btn { @apply focus-ring inline-flex items-center justify-center w-9 h-9 rounded-lg border border-stroke text-muted hover:text-ink disabled:opacity-25; }
+.panel-card { @apply rounded-2xl border border-stroke bg-surface p-4; }
